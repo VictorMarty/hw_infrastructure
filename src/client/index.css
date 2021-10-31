@@ -1,6 +1,7 @@
 .card {
     display: inline-block;
     vertical-align: top;
+    background-color: aqua;
 }
 
 p.card-text {
