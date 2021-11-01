@@ -11,7 +11,7 @@ UNIQUE="VictorMarty"
 
 DATA='{
   "queue": "TMP",
-  "summary": "TEST RELEASE. '"$TAG_ACTUAL"' smth" ,
+  "summary": "RELEASE. '"$TAG_ACTUAL"' '"$TAG_AUTOR"' " ,
   "description": "'"$CHANGELOG"'",
   "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
 }'
@@ -36,7 +36,7 @@ then
   --header 'Content-Type: application/json' \
   --data-raw '{
     "filter": {
-     "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
+      "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
     }
   }'
   )
