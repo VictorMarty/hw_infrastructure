@@ -6,6 +6,7 @@ TAG_DATE=$(git show "$TAG_ACTUAL" --pretty=format:"%ad" --no-patch)
 TAG_PREV=$(git tag | tail -2 | head -n1)
 CHANGELOG=$(git log "$TAG_PREV".. --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n" " ")
 
+echo "$CHANGELOG"
 HOST="https://api.tracker.yandex.net/v2/issues/"
 UNIQUE="VictorMarty"
 
