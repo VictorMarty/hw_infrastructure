@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+ALL_TAGS= $(git tag)
 TAG_ACTUAL=$(git tag | tail -1 | head -n1)
 TAG_AUTOR=$(git show "$TAG_ACTUAL" --pretty=format:"%an" --no-patch)
 TAG_DATE=$(git show "$TAG_ACTUAL" --pretty=format:"%ad" --no-patch)
@@ -8,6 +8,7 @@ CHANGELOG=$(git log "$TAG_PREV".. --pretty=format:"%h - %s (%an, %ar)\n" | tr -s
 echo "$TAG_ACTUAL"
 echo "$TAG_PREV"
 echo "$CHANGELOG"
+echo "$ALL_TAGS"
 HOST="https://api.tracker.yandex.net/v2/issues/"
 UNIQUE="VictorMarty"
 
