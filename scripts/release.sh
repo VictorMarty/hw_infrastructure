@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-ALL_TAGS= $(git tag | tail -1)
-TAG_ACTUAL=$(git tag | tail -1 | head -n1)
+ALL_TAGS= $(git tag --sort version:refname | tail -1)
+TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 TAG_AUTOR=$(git show "$TAG_ACTUAL" --pretty=format:"%an" --no-patch)
 TAG_DATE=$(git show "$TAG_ACTUAL" --pretty=format:"%ad" --no-patch)
-TAG_PREV=$(git tag | tail -2 | head -n1)
+TAG_PREV=$(git tag --sort version:refname | tail -2 | head -n1)
 CHANGELOG=$(git log "$TAG_PREV".. --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n" " ")
 echo "$TAG_ACTUAL"
 echo "$TAG_PREV"
