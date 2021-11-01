@@ -11,6 +11,8 @@ echo "$CHANGELOG"
 HOST="https://api.tracker.yandex.net/v2/issues/"
 UNIQUE="VictorMarty"
 
+
+
 DATA='{
   "queue": "TMP",
   "summary": "RELEASE. '"$TAG_ACTUAL"' '"$TAG_AUTOR"' " ,
