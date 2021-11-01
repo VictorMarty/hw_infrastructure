@@ -48,6 +48,7 @@ then
   --header 'Content-Type: application/json' \
   --data "$DATA"
   )
+  echo "$UPDATE_TASK"
 fi
 
 
