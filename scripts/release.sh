@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-ALL_TAGS= $(git tag)
+ALL_TAGS= $(git tag | tail -1)
 TAG_ACTUAL=$(git tag | tail -1 | head -n1)
 TAG_AUTOR=$(git show "$TAG_ACTUAL" --pretty=format:"%an" --no-patch)
 TAG_DATE=$(git show "$TAG_ACTUAL" --pretty=format:"%ad" --no-patch)
