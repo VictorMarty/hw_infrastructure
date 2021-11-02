@@ -4,7 +4,7 @@ npm ci --silent
 npm run build --silent
 TEST_RESULT=$(npm test | tail -n +3)
 
-echo "{\"text\": \"$(echo $testResult | tr -d ':' | tr "\r\n" " ")\"}" | jq > tmp.json
+echo "{\"text\": \"$(echo $TEST_RESULT| tr -d ':' | tr "\r\n" " ")\"}" | jq > tmp.json
 
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 
