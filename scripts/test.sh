@@ -2,14 +2,12 @@
 
 npm ci --silent
 npm run build --silent
-TEST_RESULT=$(npx jest 2>&1 | tail -5 )
-
+TEST_RESULT=$(npx jest --silent 2>&1 | tail -5 | tr -s ":" " " | tr -s "\n" " " )
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 
-echo "{\"text\": \"$(echo $TEST_RESULT)\"}" | jq > tmp.json
-
-
 UNIQUE="VictorMarty11"
+
+
 
 
   SEARCH_TASK=$(
@@ -26,14 +24,14 @@ UNIQUE="VictorMarty11"
 
   TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
 
-
   ADD_COMMENT=$(
-  curl -o /dev/null -s -w "%{http_code}\n" --location --request POST "https://api.tracker.yandex.net/v2/issues/"$TASK_ID"/comments" \
-  --header 'Authorization: OAuth '"$TOKEN" \
-  --header 'X-Org-ID: '"$ORG_ID" \
-  --header 'Content-Type: application/json' \
-  --data-binary @tmp.json
-  )
-  echo "$ADD_COMMENT"
+    curl -so dev/null -w '%{http_code}' -X POST "https://api.tracker.yandex.net/v2/issues/"$TASK_ID"/comments" \
+    --header 'Authorization: OAuth '"$TOKEN" \
+    --header 'X-Org-ID: '"$ORG_ID" \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+      "text": "'"$TEST_RESULT"'"
+  }'
+)
 
-  rm tmp.json
+echo "$ADD_COMMENT"
