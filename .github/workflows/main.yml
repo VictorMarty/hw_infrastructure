@@ -37,4 +37,10 @@ jobs:
           TOKEN: ${{secrets.TOKEN_AUTH}}
           ORG_ID: ${{secrets.ORG_ID}}
 
+        - name: Do docker
+        run: sh ./scripts/docker.sh
+        env:
+          TOKEN: ${{secrets.TOKEN_AUTH}}
+          ORG_ID: ${{secrets.ORG_ID}}
+
 
