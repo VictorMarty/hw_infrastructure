@@ -1,17 +1,18 @@
 #! /bin/bash
-
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 UNIQUE="VictorMarty11"
 
 sudo docker build -t release:"$TAG_ACTUAL" .
 
-
-
 if [ $? = 0 ]; then
+  MESSAGE="Docker created successfully"
   echo "Docker created successfully"
+else
+  MESSAGE="Docker-image wasn't created "
+  echo "Docker-image wasn't created"
+fi
 
-COMMENT="Docker: release:$TAG_ACTUAL"
-  SEARCH_TASK=$(
+SEARCH_TASK=$(
   curl --location --silent --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
   --header 'Authorization: OAuth '"$TOKEN" \
   --header 'X-Org-ID: '"$ORG_ID" \
@@ -23,23 +24,34 @@ COMMENT="Docker: release:$TAG_ACTUAL"
   }'
   )
 
-  TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
+COMMENT="Docker: release:$TAG_ACTUAL"
+
+TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
+DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
+SUMMARY=$(echo "$SEARCH_TASK" | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
+DESCRIPTION=$(echo "$DESCRIPTION" | sed -z 's/\n/\\n/g')
+NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""$COMMENT"" ""\n ""$MESSAGE"
+echo "$NEW_DESCRIPTION"
+
+NEW_DATA='{
+  "queue": "TMP",
+  "summary": "'${SUMMARY}'",
+  "description": "'${NEW_DESCRIPTION}'",
+  "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
+}'
+
+ UPDATE_TASK=$(
+  curl -o /dev/null -s -w "%{http_code}\n" --location --request PATCH https://api.tracker.yandex.net/v2/issues/${TASK_ID}/ \
+  --header 'Authorization: OAuth '"$TOKEN" \
+  --header 'X-Org-ID: '"$ORG_ID" \
+  --header 'Content-Type: application/json' \
+  --data-raw "$NEW_DATA"
+  )
 
 
-    ADD_COMMENT=$(
-    curl  -s -o dev/null -w '%{http_code}' -X POST https://api.tracker.yandex.net/v2/issues/$TASK_ID/comments \
-    -H "Content-Type: application/json" \
-    -H "Authorization: OAuth $TOKEN" \
-    -H "X-Org-Id: $ORG_ID" \
-    -d '{
-        "text":"'"$COMMENT"'"
-    }')
 if [ "$ADD_COMMENT" = "201" ]
 then
       echo "Comment added"
-    fi
-
 else
-  echo "Docker-image wasn't created"
-  exit 1
+	echo "Can't added comment adout Docker"
 fi
