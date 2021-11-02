@@ -6,12 +6,13 @@ TAG_DATE=$(git show "$TAG_ACTUAL" --pretty=format:"%ad" --no-patch)
 TAG_PREV=$(git tag --sort version:refname | tail -2 | head -n1)
 CHANGELOG=$(git log "$TAG_PREV".. --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n" " ")
 
+
 HOST="https://api.tracker.yandex.net/v2/issues/"
-UNIQUE="VictorMarty"
+UNIQUE="VictorMarty11"
 
 DATA='{
   "queue": "TMP",
-  "summary": "RELEASE. '"$TAG_ACTUAL"' '"$TAG_AUTOR"' " ,
+  "summary": " RELEASE. '$TAG_ACTUAL'",
   "description": "'"$CHANGELOG"'",
   "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
 }'
@@ -21,16 +22,16 @@ DATA='{
 ADD_TASK_CODE_RESPONSE=$(
   curl -o /dev/null -s -w "%{http_code}\n" --location --request POST "$HOST" \
   --header 'Authorization: OAuth '"$TOKEN" \
-  --header 'X-Org-ID: '"$ORG_ID" \
+  --header 'X-Org-Id: '"$ORG_ID" \
   --header 'Content-Type: application/json' \
   --data "$DATA"
 )
 
-echo "'$ADD_TASK_CODE_RESPONSE'"
 if [ "$ADD_TASK_CODE_RESPONSE" = "409" ]
+echo "Ticket already exist, update ticket"
 then
   SEARCH_TASK=$(
-  curl --location --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
+  curl --location --silent --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
   --header 'Authorization: OAuth '"$TOKEN" \
   --header 'X-Org-ID: '"$ORG_ID" \
   --header 'Content-Type: application/json' \
@@ -49,7 +50,5 @@ then
   --header 'Content-Type: application/json' \
   --data "$DATA"
   )
-  echo "$UPDATE_TASK"
+
 fi
-
-

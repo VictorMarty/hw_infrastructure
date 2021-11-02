@@ -19,8 +19,6 @@ jobs:
     steps:
 
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Install jq
         run: sudo apt-get install -y jq
 
@@ -30,4 +28,11 @@ jobs:
         env:
           TOKEN: ${{secrets.TOKEN_AUTH}}
           ORG_ID: ${{secrets.ORG_ID}}
+
+      - name: Do test
+        run: sh ./scripts/test.sh
+        env:
+          TOKEN: ${{secrets.TOKEN_AUTH}}
+          ORG_ID: ${{secrets.ORG_ID}}
+
 
