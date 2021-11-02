@@ -30,7 +30,7 @@ TEST_RESULT="TEST"
     --header 'X-Org-ID: '"$ORG_ID" \
     --header 'Content-Type: application/json' \
     --data-raw '{
-      "text": "'"$TEST_RESULT"'"
+      "text": "some text"
   }'
 )
 
