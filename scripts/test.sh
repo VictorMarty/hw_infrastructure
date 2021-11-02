@@ -2,12 +2,12 @@
 
 npm ci --silent
 npm run build --silent
-TEST_RESULT=$(npx jest --silent 2>&1 | tail -5 | tr -s ":" " " | tr -s "\n" " " )
+TEST_RESULTT=$(npx jest --silent 2>&1 | tail -5 | tr -s ":" " " | tr -s "\n" " " )
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 
 UNIQUE="VictorMarty11"
 
-
+TEST_RESULT="TEST"
 
 
   SEARCH_TASK=$(
