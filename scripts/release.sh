@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 TAG_AUTOR=$(git show "$TAG_ACTUAL" --pretty=format:"%an" --no-patch)
 TAG_DATE=$(git show "$TAG_ACTUAL" --pretty=format:"%ad" --no-patch)

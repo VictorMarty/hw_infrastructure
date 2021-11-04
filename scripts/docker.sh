@@ -1,6 +1,8 @@
-#! /bin/bash
+#!/usr/bin/env bash
+
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 UNIQUE="VictorMarty11"
+HOST="https://api.tracker.yandex.net/v2/issues/"
 
 sudo docker build -t release:"$TAG_ACTUAL" .
 
@@ -13,24 +15,20 @@ else
 fi
 
 SEARCH_TASK=$(
-  curl --location --silent --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
-  --header 'Authorization: OAuth '"$TOKEN" \
-  --header 'X-Org-ID: '"$ORG_ID" \
-  --header 'Content-Type: application/json' \
-  --data-raw '{
-    "filter": {
-      "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
-    }
-  }'
-  )
+curl --location --silent --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
+--header 'Authorization: OAuth '"$TOKEN" \
+--header 'X-Org-ID: '"$ORG_ID" \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "filter": {"unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"}}')
 
 COMMENT="Docker: release:$TAG_ACTUAL"
 
 TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
-DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
+DESCRIPTION1=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
 SUMMARY=$(echo "$SEARCH_TASK" | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
-DESCRIPTION=$(echo "$DESCRIPTION" | sed -z 's/\n/\\n/g')
-NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""$COMMENT"" ""\n ""$MESSAGE"
+DESCRIPTION2=$(echo "$DESCRIPTION1" | sed -z 's/\n/\\n/g')
+NEW_DESCRIPTION="$DESCRIPTION2""\n ""\n ""$COMMENT"" ""\n ""$MESSAGE"
 echo "$NEW_DESCRIPTION"
 
 NEW_DATA='{

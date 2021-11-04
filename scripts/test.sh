@@ -4,7 +4,7 @@ npm ci --silent
 npm run build --silent
 TEST_RESULT=$(npm run test --silent 2>&1 | tail -5 | tr -s "\n" " " | tr -s "\" " " ")
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
-
+HOST="https://api.tracker.yandex.net/v2/issues/"
 UNIQUE="VictorMarty11"
 
 SEARCH_TASK=$(
@@ -20,27 +20,27 @@ SEARCH_TASK=$(
   )
 
 TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
-DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
+DESCRIPTION1=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
 
-DESCRIPTION=$(echo "$DESCRIPTION" | sed -z 's/\n/\\n/g')
-NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""TEST RESULT:""$TEST_RESULT"
+DESCRIPTION2=$(echo "$DESCRIPTION1" | sed -z 's/\n/\\n/g')
+NEW_DESCRIPTION="$DESCRIPTION2""\n ""\n ""TEST RESULT:""$TEST_RESULT"
 echo "$NEW_DESCRIPTION"
 SUMMARY=$(echo "$SEARCH_TASK" | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
 echo "$SUMMARY"
 NEW_DATA='{
   "queue": "TMP",
-  "summary": "'${SUMMARY}'",
-  "description": "'${NEW_DESCRIPTION}'",
+  "summary": "'"$SUMMARY"'",
+  "description": "'"$NEW_DESCRIPTION"'",
   "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
 }'
 
 UPDATE_TASK=$(
-  curl -o /dev/null -s -w "%{http_code}\n" --location --request PATCH https://api.tracker.yandex.net/v2/issues/${TASK_ID}/ \
+  curl -o /dev/null -s -w "%{http_code}\n" --location --request PATCH "$HOST""$TASK_ID" \
   --header 'Authorization: OAuth '"$TOKEN" \
   --header 'X-Org-ID: '"$ORG_ID" \
   --header 'Content-Type: application/json' \
   --data-raw "$NEW_DATA"
-  )
+)
 
 echo "$UPDATE_TASK"
 if [ "$UPDATE_TASK" = "200" ]
