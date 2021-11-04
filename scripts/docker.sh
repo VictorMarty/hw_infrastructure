@@ -27,9 +27,9 @@ SEARCH_TASK=$(
 COMMENT="Docker: release:$TAG_ACTUAL"
 
 TASK_ID=$(echo "$SEARCH_TASK"  | tr '\r\n' ' ' | jq -r ".[0].id")
-DESCRIPTION=$(echo "$SEARCH_TASK"  | tr '\r\n' ' ' | jq -r ".[0].description")
+DESCRIPTION=$(echo "$SEARCH_TASK"  | tr '\r\n' 'SUPADUPA' | jq -r ".[0].description")
 SUMMARY=$(echo "$SEARCH_TASK"  | tr '\r\n' ' ' | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
-DESCRIPTION=$(echo "$DESCRIPTION"  | tr '\r\n' ' ' | sed -z 's/\n/\\n/g')
+DESCRIPTION=$(echo "$DESCRIPTION"  | tr 'SUPADUPA' '\n' )
 NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""$COMMENT"" ""\n ""$MESSAGE"
 echo "$NEW_DESCRIPTION"
 
@@ -50,7 +50,7 @@ UPDATE_TASK=$(
 
 echo "$UPDATE_TASK"
 
-if [ "$ADD_COMMENT" = "201" ]
+if [ "$UPDATE_TASK" = "200" ]
 then
   echo "Comment added"
 else
