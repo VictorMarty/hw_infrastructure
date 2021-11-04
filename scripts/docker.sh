@@ -3,6 +3,8 @@
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 UNIQUE="VictorMarty11"
 HOST="https://api.tracker.yandex.net/v2/issues/"
+TOKEN="AQAAAAAhNMz5AAd5Z0oVrHknRU78gkGFwFmhQAs"
+ORG_ID="6461097"
 
 sudo docker build -t release:"$TAG_ACTUAL" .
 

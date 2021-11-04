@@ -8,6 +8,8 @@ CHANGELOG=$(git log "$TAG_PREV".. --pretty=format:"%h - %s (%an, %ar)\n" | tr -s
 HOST="https://api.tracker.yandex.net/v2/issues/"
 UNIQUE="VictorMarty11"
 TITLE=$(echo "RELEASE. ""$TAG_ACTUAL"" ""$TAG_AUTOR")
+TOKEN="AQAAAAAhNMz5AAd5Z0oVrHknRU78gkGFwFmhQAs"
+ORG_ID="6461097"
 
 DATA='{
   "queue": "TMP",

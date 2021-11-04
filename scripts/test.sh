@@ -6,6 +6,8 @@ TEST_RESULT=$(npm run test --silent 2>&1 | tail -5 | tr -s "\n" " " | tr -s "\" 
 TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 HOST="https://api.tracker.yandex.net/v2/issues/"
 UNIQUE="VictorMarty11"
+TOKEN="AQAAAAAhNMz5AAd5Z0oVrHknRU78gkGFwFmhQAs"
+ORG_ID="6461097"
 
 SEARCH_TASK=$(
   curl --location --silent --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
