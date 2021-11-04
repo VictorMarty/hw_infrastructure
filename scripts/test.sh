@@ -15,7 +15,7 @@ SEARCH_TASK=$(
   --data-raw '{"filter":{"unique":"'"$UNIQUE"''"$TAG_ACTUAL"'"}}'
   )
 
-TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
+TASK_ID=$(echo "$SEARCH_TASK" | sed -z 's/\n/\\n/g' | jq ".[0].id")
 # DESCRIPTION1=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
 DESCRIPTION1="test yu"
 echo "SEARCH_TASK $SEARCH_TASK"
@@ -34,7 +34,7 @@ NEW_DATA='{
 }'
 
 UPDATE_TASK=$(
-  curl -o /dev/null -s -w "%{http_code}\n" --location --request PATCH https://api.tracker.yandex.net/v2/issues/6183e3d5ac3a9529257e5dc5/ \
+  curl -o /dev/null -s -w "%{http_code}\n" --location --request PATCH https://api.tracker.yandex.net/v2/issues/6183e3d5ac3a9529257e5dc5 \
   --header 'Authorization: OAuth '"$TOKEN" \
   --header 'X-Org-ID: '"$ORG_ID" \
   --header 'Content-Type: application/json' \
