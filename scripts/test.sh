@@ -8,7 +8,7 @@ TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 UNIQUE="VictorMarty11"
 
 SEARCH_TASK=$(
-  curl --location --request -X POST "https://api.tracker.yandex.net/v2/issues/_search" \
+  curl --location --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
   --header 'Authorization: OAuth '"$TOKEN" \
   --header 'X-Org-ID: '"$ORG_ID" \
   --header 'Content-Type: application/json' \
