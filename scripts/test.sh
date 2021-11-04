@@ -21,7 +21,7 @@ SEARCH_TASK=$(
 
 TASK_ID=$(echo "$SEARCH_TASK" | tr '\r\n' ' ' | jq ".[0].id")
 # TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
-DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description | sed -z 's/\r\n/\\n/g")
+DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description" | sed -z 's/\r\n/\\n/g')
 
 echo "SEARCH_TASK $SEARCH_TASK"
 echo "DESCRIPTION $DESCRIPTION"
