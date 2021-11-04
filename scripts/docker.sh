@@ -26,7 +26,7 @@ SEARCH_TASK=$(
 
 COMMENT="Docker: release:$TAG_ACTUAL"
 
-TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
+TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].key")
 DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
 SUMMARY=$(echo "$SEARCH_TASK" | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
 DESCRIPTION=$(echo "$DESCRIPTION" | sed -z 's/\n/\\n/g')
