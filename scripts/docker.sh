@@ -49,7 +49,7 @@ UPDATE_TASK=$(
   )
 
 
-if [ "$ADD_COMMENT" = "201" ]
+if [ "$ADD_COMMENT" = "200" ]
 then
       echo "Comment added"
 else
