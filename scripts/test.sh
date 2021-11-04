@@ -8,14 +8,16 @@ TAG_ACTUAL=$(git tag --sort version:refname | tail -1 | head -n1)
 UNIQUE="VictorMarty11"
 
 SEARCH_TASK=$(
-  curl --location --silent --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
+  curl --location --request -X POST "https://api.tracker.yandex.net/v2/issues/_search" \
   --header 'Authorization: OAuth '"$TOKEN" \
   --header 'X-Org-ID: '"$ORG_ID" \
   --header 'Content-Type: application/json' \
-  --data-raw '{"filter": {"unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"}}')
+  --data-raw '{"filter":{"unique":"'"$UNIQUE"''"$TAG_ACTUAL"'"}}'
+  )
 
 TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
 DESCRIPTION1=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
+echo "SEARCH_TASK $SEARCH_TASK"
 echo "DESCRIPTION1 $DESCRIPTION1"
 echo "TASK_ID $TASK_ID"
 DESCRIPTION=$(echo "$DESCRIPTION1" | sed -z 's/\n/\\n/g')
