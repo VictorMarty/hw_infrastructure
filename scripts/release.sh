@@ -14,7 +14,7 @@ DATA='{
   "description": "'"$CHANGELOG"'",
   "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
 }'
-
+echo "Actual tag is ""$TAG_ACTUAL"
 ADD_TASK_CODE_RESPONSE=$(
   curl -o /dev/null -s -w "%{http_code}\n" --location --request POST "$HOST" \
   --header 'Authorization: OAuth '"$TOKEN" \
