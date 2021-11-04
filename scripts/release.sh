@@ -42,7 +42,7 @@ then
   )
 
 
-  TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].key")
+  TASK_ID=$(echo "$SEARCH_TASK" | tr '\r\n' ' ' | jq -r ".[0].id")
   UPDATE_TASK=$(
   curl -o /dev/null -s -w "%{http_code}\n" --location --request PATCH "$HOST""$TASK_ID" \
   --header 'Authorization: OAuth '"$TOKEN" \

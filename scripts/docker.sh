@@ -26,10 +26,10 @@ SEARCH_TASK=$(
 
 COMMENT="Docker: release:$TAG_ACTUAL"
 
-TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].key")
-DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
-SUMMARY=$(echo "$SEARCH_TASK" | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
-DESCRIPTION=$(echo "$DESCRIPTION" | sed -z 's/\n/\\n/g')
+TASK_ID=$(echo "$SEARCH_TASK"  | tr '\r\n' ' ' | jq -r ".[0].id")
+DESCRIPTION=$(echo "$SEARCH_TASK"  | tr '\r\n' ' ' | jq -r ".[0].description")
+SUMMARY=$(echo "$SEARCH_TASK"  | tr '\r\n' ' ' | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
+DESCRIPTION=$(echo "$DESCRIPTION"  | tr '\r\n' ' ' | sed -z 's/\n/\\n/g')
 NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""$COMMENT"" ""\n ""$MESSAGE"
 echo "$NEW_DESCRIPTION"
 
@@ -40,7 +40,7 @@ NEW_DATA='{
   "unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"
 }'
 
- UPDATE_TASK=$(
+UPDATE_TASK=$(
   curl -o /dev/null -s -w "%{http_code}\n" --location --request PATCH https://api.tracker.yandex.net/v2/issues/${TASK_ID}/ \
   --header 'Authorization: OAuth '"$TOKEN" \
   --header 'X-Org-ID: '"$ORG_ID" \
