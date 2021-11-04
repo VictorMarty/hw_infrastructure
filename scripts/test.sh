@@ -15,9 +15,10 @@ SEARCH_TASK=$(
   --data-raw '{"filter": {"unique": "'"$UNIQUE"''"$TAG_ACTUAL"'"}}')
 
 TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
-DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
-
-DESCRIPTION=$(echo "$DESCRIPTION" | sed -z 's/\n/\\n/g')
+DESCRIPTION1=$(echo "$SEARCH_TASK" | jq -r ".[0].description")
+echo "DESCRIPTION1 $DESCRIPTION1"
+echo "TASK_ID $TASK_ID"
+DESCRIPTION=$(echo "$DESCRIPTION1" | sed -z 's/\n/\\n/g')
 NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""TEST RESULT:""$TEST_RESULT"
 echo "DESCRIPTION $NEW_DESCRIPTION"
 SUMMARY=$(echo "$SEARCH_TASK" | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
