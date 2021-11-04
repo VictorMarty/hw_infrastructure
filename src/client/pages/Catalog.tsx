@@ -22,7 +22,7 @@ export const Catalog: React.FC = () => {
                 <ProductItem product={p} />
             </div>
         )) :
-        'LOADING';
+        'LOADING111';
 
     return (
         <div className={bem()}>
