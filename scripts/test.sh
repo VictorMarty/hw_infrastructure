@@ -27,7 +27,7 @@ echo "SEARCH_TASK $SEARCH_TASK"
 echo "DESCRIPTION1 $DESCRIPTION1"
 echo "TASK_ID $TASK_ID"
 # DESCRIPTION=$(echo "$DESCRIPTION1" | sed -z 's/\n/\\n/g')
-# NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""TEST RESULT:""$TEST_RESULT"
+NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""TEST RESULT:""$TEST_RESULT"
 # echo "DESCRIPTION $NEW_DESCRIPTION"
 SUMMARY=$(echo "$SEARCH_TASK" | tr '\r\n' ' ' | jq -r ".[0].summary" |  sed -z 's/\n/\\n/g')
 echo "SUMMARY $SUMMARY"
