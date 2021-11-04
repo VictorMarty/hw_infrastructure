@@ -21,7 +21,7 @@ SEARCH_TASK=$(
 
 TASK_ID=$(echo "$SEARCH_TASK" | tr '\r\n' ' ' | jq ".[0].id")
 # TASK_ID=$(echo "$SEARCH_TASK" | jq -r ".[0].id")
-DESCRIPTION=$(echo "$SEARCH_TASK" | jq -r ".[0].description" | sed -z 's/\r\n/\\n/g')
+DESCRIPTION=$(echo "$SEARCH_TASK" | tr '\r\n' ' ' | jq -r ".[0].description" )
 
 echo "SEARCH_TASK $SEARCH_TASK"
 echo "DESCRIPTION $DESCRIPTION"
@@ -29,7 +29,7 @@ echo "TASK_ID $TASK_ID"
 # DESCRIPTION=$(echo "$DESCRIPTION1" | sed -z 's/\n/\\n/g')
 NEW_DESCRIPTION="$DESCRIPTION""\n ""\n ""TEST RESULT:""$TEST_RESULT"
 echo "New_DESCRIPTION $NEW_DESCRIPTION"
-SUMMARY=$(echo "$SEARCH_TASK" | tr '\r\n' ' ' | jq -r ".[0].summary" |  sed -z 's/\r\n/\\n/g')
+SUMMARY=$(echo "$SEARCH_TASK" | tr '\r\n' ' ' | jq -r ".[0].summary")
 echo "SUMMARY $SUMMARY"
 NEW_DATA='{
   "queue": "TMP",
